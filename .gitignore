@@ -1,0 +1,6 @@
+.idea/
+__pycache__/
+venv/
+recognition_eocr.py
+data/result*.txt
+data/extrd_images/*.png
