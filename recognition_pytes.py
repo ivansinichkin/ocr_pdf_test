@@ -33,39 +33,42 @@ def text_recognition_pyt(img, language):
     :return text: распознанный текст в виде строки
     """
     myconfig = r'--psm 1 --oem 3'
+    print('Распознавание текста на изображении...')
     text = pytesseract.image_to_string(img, lang=language, config=myconfig,)
     return text
 
 
-def write_to_pdf(text):
-    doc = fitz.open()  # new or existing PDF
-    page = doc.new_page()  # new page, or choose doc[n]
-    r1 = fitz.Rect(25, 25, 290, 815)  # a 50x50 rectangle
-    r2 = fitz.Rect(295, 25, 585, 815) # 2nd rect
+def write_to_pdf(docpdf, text1, text2):
+    """
+    :param docpdf: Объект doc файла .pdf, открытый с помощью fitz
+    :param text1: текст для записи в левую рамку
+    :param text2: текст для записи в правую рамку
+    :return:
+    """
+    font_file = r"times.ttf"
 
-    t1 = "text with rotate = 0."  # the texts we will put in
-    t2 = "text with rotate = 90."
+    page = docpdf.new_page()  # new page, or choose doc[n]
+    page.insert_font(fontname="times", fontfile=font_file)
+    r1 = fitz.Rect(25, 25, 290, 815)  # a 50x50 rectangle
+    r2 = fitz.Rect(295, 25, 585, 815)  # 2nd rect
 
     black = (0, 0, 0)
-    """We use a Shape object (something like a canvas) to output the text and
-    the rectangles surrounding it for demonstration.
-    """
+
     shape = page.new_shape()  # create Shape
     shape.draw_rect(r1)  # draw rectangles
     shape.draw_rect(r2)  # giving them
 
     shape.finish(width=0.3, color=black)
-    # Now insert text in the rectangles. Font "Helvetica" will be used
-    # by default. A return code rc < 0 indicates insufficient space (not checked here).
-    # как быть с кодировкой...
-    rc = shape.insert_textbox(r1, text.encode('utf-8').decode("Cyrillic"), color=black, fontsize=6,
-                              fontname='HELV',
-                              align=3)
-    print(rc)
-    # rc = shape.insert_textbox(r2, text, color=black)
+    # Now insert text in the rectangles.
+    # A return code rc < 0 indicates insufficient space (not checked here).
+    font_size = 8
+    rc1 = shape.insert_textbox(r1, text1, encoding=2, color=black, fontsize=font_size, fontname='times', align=3)
+    print(rc1)
+    rc2 = shape.insert_textbox(r2, text2, encoding=2, color=black, fontsize=font_size, fontname='times', align=3)
+    print(rc2)
 
     shape.commit()  # write all stuff to page /Contents
-    doc.save("result.pdf")
+    print('Текст записан в pdf')
 
 
 def write_to_txt(text, filename):

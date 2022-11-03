@@ -3,4 +3,5 @@ __pycache__/
 venv/
 recognition_eocr.py
 data/result*.txt
+data/result*.pdf
 data/extrd_images/*.png
