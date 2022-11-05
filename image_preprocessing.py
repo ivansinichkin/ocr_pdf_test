@@ -21,7 +21,7 @@ def rotate_image(img):
     num_rows, num_cols = img_bin.shape[:2]
 
     best_zero, best_angle = None, 0
-    # итеративно поворачиваем изображение на треть градуса
+    # итеративно поворачиваем изображение на пятую часть градуса
     for my_angle in range(-15, 16, 1):
         rotation_matrix = cv2.getRotationMatrix2D((num_cols / 2, num_rows / 2), my_angle / 5, 1)
         img_rotation = cv2.warpAffine(img_bin, rotation_matrix, (num_cols, num_rows),
@@ -70,16 +70,16 @@ def cut_image(img, x_cut):
     return img_left, img_right
 
 
-def detect_dividing_line(img):
+def detect_dividing_line(img_bin):
     """
     Функция для обнаружения разделительной линии между колонками текста
     :param img: объект изоражения
     :return x_coor_line: x-координата разделительной линии
     """
     # Search is performed in a specific part of the image
-    img_shape = img.shape
+    img_shape = img_bin.shape
     h, w = img_shape[0], img_shape[1]
-    img_cut = img[0: h // 2, w // 2 - 50: w // 2 + 50]
+    img_cut = img_bin[0: h // 2, w // 2 - 50: w // 2 + 50]
     # Convert the img to grayscale
     # gray = cv2.cvtColor(img_cut, cv2.COLOR_BGR2GRAY)
 
@@ -116,7 +116,7 @@ def detect_dividing_line(img):
         # cv2.line draws a line in img from the point(x1,y1) to (x2,y2).
         # (0,0,255) denotes the colour of the line to be
         # drawn. In this case, it is red.
-        # cv2.line(img, (x1, y1), (x2, y2), (0, 0, 255), 10)
+        # cv2.line(img_bin, (x1, y1), (x2, y2), (0, 0, 255), 10)
 
         x1_img = int(w // 2 - 50 + x1)
         x2_img = int(w // 2 - 50 + x2)
