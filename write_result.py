@@ -34,15 +34,15 @@ def write_to_pdf(docpdf, text1, text2):
     shape.commit()  # write all stuff to page /Contents
 
 
-def write_to_txt(text_list: list, filename):
+def write_to_txt(text_list: list, pathfile):
     """
     функция выполняет запись текста в текстовый файл
     :param text_list: список в котором хранятся строки текста
     :param filename: путь к файлу для записи
     :return:
     """
-    with open(file=filename, mode='a', encoding='utf-8') as f:
+    with open(file=pathfile, mode='a', encoding='utf-8') as f:
         for text in text_list:
             f.write(text)
         f.close()
-    print(f'Текст записан в файл {filename}')
+    print(f'Текст записан в файл {pathfile}')
